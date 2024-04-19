@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "429372014864",
+    "project_id": "mess-management-b31cd",
+    "storage_bucket": "mess-management-b31cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429372014864:android:65390eee90e77971dfe595",
+        "android_client_info": {
+          "package_name": "com.example.mess_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVRiAplKhuJxPdYUbCwT8CcfMEDrH5QZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
