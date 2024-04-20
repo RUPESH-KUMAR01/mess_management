@@ -2,18 +2,15 @@
 import 'package:mess_repository/src/entities/mess_entity.dart';
 
 class Mess {
-  String Messid;
   int MessNo;
   int Capacity;
   int Present;
   Mess({
-    required this.Messid,
     required this.MessNo,
     required this.Capacity,
     required this.Present,
   });
   static final empty=Mess(
-    Messid: '',
      MessNo: 0,
     Capacity: 0,
      Present: 0);
@@ -25,7 +22,6 @@ class Mess {
       int? Present
     }){
       return Mess(
-        Messid: Messid??this.Messid,
          MessNo: MessNo??this.MessNo,
           Capacity: Capacity??this.Capacity,
            Present: Present??this.Present);
@@ -39,7 +35,6 @@ class Mess {
 
   MessEntity toEntity(){
     return MessEntity(
-      Messid:Messid,
       MessNo:MessNo,
       Capacity:Capacity,
       Present:Present
@@ -48,7 +43,6 @@ class Mess {
 
   static Mess fromEntity(MessEntity entity){
     return Mess(
-      Messid: entity.Messid,
        MessNo: entity.MessNo,
         Capacity: entity.Capacity,
          Present: entity.Present);
@@ -56,7 +50,6 @@ class Mess {
   @override
   String toString(){
     return '''MessEntity:{
-      Messid:$Messid,
       MessNo:$MessNo,
       Capacity:$Capacity,
       Present:$Present

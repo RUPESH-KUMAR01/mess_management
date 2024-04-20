@@ -7,5 +7,5 @@ abstract class MessRepository{
 
   Future<Mess> CreateMess(Mess mess);
   Future<void> IncreaseMess(Mess mess);
-  Future<List<Mess>> GetMess();
+  Stream<List<Mess>> GetMess();
 }

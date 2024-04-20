@@ -8,7 +8,6 @@ class MyUserEntity extends Equatable{
   final bool Alloted;
   final int Balance;
   final int MessNo;
-  final String Messid;
   final bool isAdmin;
 
 
@@ -20,7 +19,6 @@ class MyUserEntity extends Equatable{
     this.Alloted=false,
     this.Balance=0,
     required this.MessNo,
-    required this.Messid,
     this.isAdmin=false
     });
 
@@ -33,7 +31,6 @@ class MyUserEntity extends Equatable{
       'Alloted':Alloted,
       'Balance':Balance,
       'isAdmin':isAdmin,
-      'Messid':Messid,
       'MessNo':MessNo
     };
   }
@@ -46,7 +43,6 @@ class MyUserEntity extends Equatable{
      RollNo: doc['RollNo'] as String,
      Alloted: doc['Alloted'] as bool,
      Balance: doc['Balance'] as int, 
-     Messid: doc['Messid'] as String,
      MessNo: doc['MessNo'] as int,
      isAdmin: doc['isAdmin'] as bool
      );
@@ -61,12 +57,11 @@ class MyUserEntity extends Equatable{
       Alloted:$Alloted,
       Balance:$Balance,
       MessNo:$MessNo,
-      Messid:$Messid,
       isAdmin:$isAdmin
     }''';
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,Messid,isAdmin];
+  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,isAdmin];
 }

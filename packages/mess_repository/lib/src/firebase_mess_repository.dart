@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mess_repository/mess_repository.dart';
 import 'package:mess_repository/src/entities/mess_entity.dart';
 import 'package:mess_repository/src/models/mess.dart';
-import 'package:uuid/uuid.dart';
 
 class FirebaseMessRepository implements MessRepository{
   
@@ -14,9 +13,16 @@ class FirebaseMessRepository implements MessRepository{
   Future<Mess> CreateMess(Mess mess) async {
 
     try{
-      mess.Messid=const Uuid().v1();
-      await MessCollection.doc(mess.Messid).set(mess.toEntity().toDocument());
+      bool ok=false;
+      await MessCollection.doc(mess.MessNo.toString()).get().then((value) => value.exists?ok=true:ok=false);
+      if(ok){
+        mess.MessNo=-1;
+        return mess;
+      }
+      else{
+      await MessCollection.doc(mess.MessNo.toString()).set(mess.toEntity().toDocument());
       return mess;
+      }
     }
     catch(e){
       log(e.toString());
@@ -25,14 +31,14 @@ class FirebaseMessRepository implements MessRepository{
   }
 
   @override
-  Future<List<Mess>> GetMess() async {
+  Stream<List<Mess>> GetMess() {
     // TODO: implement GetMess
     try {
       return MessCollection
-      .get()
-      .then(
-        (value) =>
-         value.docs
+      .snapshots()
+      .map(
+        (snapShot) =>
+         snapShot.docs
          .map(
           (e) => Mess.fromEntity(MessEntity.fromDocument(e.data())))
           .toList()
@@ -46,7 +52,7 @@ class FirebaseMessRepository implements MessRepository{
   @override
   Future<void> IncreaseMess(Mess mess) async {
     try {
-      await MessCollection.doc(mess.Messid).update(mess.toEntity().toDocument());
+      await MessCollection.doc(mess.MessNo.toString()).update(mess.toEntity().toDocument());
     } catch (e) {
       log(e.toString());
       rethrow;
