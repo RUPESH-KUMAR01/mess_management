@@ -31,19 +31,16 @@ class FirebaseMessRepository implements MessRepository{
   }
 
   @override
-  Stream<List<Mess>> GetMess() {
+  Future<List<Mess>> GetMess() async {
     // TODO: implement GetMess
-    try {
-      return MessCollection
-      .snapshots()
-      .map(
-        (snapShot) =>
-         snapShot.docs
-         .map(
-          (e) => Mess.fromEntity(MessEntity.fromDocument(e.data())))
-          .toList()
-          );
-    } catch (e) {
+     try{
+    List<Mess> messes=[];
+    final pro=await MessCollection.get();
+    pro.docs.forEach((element) {
+      return messes.add(Mess.fromEntity(MessEntity.fromDocument(element.data())));
+    });
+    return messes;
+    }catch(e){
       log(e.toString());
       rethrow;
     }
@@ -57,6 +54,13 @@ class FirebaseMessRepository implements MessRepository{
       log(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Stream<List<Mess>?> get messes{
+    return MessCollection.snapshots()
+    .map((SnapShot) =>SnapShot.docs
+    .map((document) => Mess.fromEntity(MessEntity.fromDocument(document.data()))).toList());
   }
   
 }

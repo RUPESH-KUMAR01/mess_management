@@ -4,8 +4,8 @@ import 'package:mess_repository/src/models/mess.dart';
 
 abstract class MessRepository{
 
-
+  Stream<List<Mess>?> get messes;
   Future<Mess> CreateMess(Mess mess);
   Future<void> IncreaseMess(Mess mess);
-  Stream<List<Mess>> GetMess();
+  Future<List<Mess>> GetMess();
 }

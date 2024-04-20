@@ -8,3 +8,17 @@ sealed class MessListState extends Equatable {
 }
 
 final class MessListInitial extends MessListState {}
+
+final class MessListLoading extends MessListState{}
+
+final class MessListFailure extends MessListState{}
+
+final class MessListSuccess extends MessListState{
+  final List<Mess> messes;
+
+  
+  MessListSuccess(this.messes);
+
+  @override
+  List<Object> get props =>[messes];
+}
