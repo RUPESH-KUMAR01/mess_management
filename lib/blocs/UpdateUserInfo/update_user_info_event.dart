@@ -6,3 +6,10 @@ sealed class UpdateUserInfoEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+
+class SetUserInfo extends UpdateUserInfoEvent{
+  final Mess mess;
+  final String MyUserId;
+  const SetUserInfo(this.mess,this.MyUserId);
+}

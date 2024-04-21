@@ -7,7 +7,7 @@ import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 import 'package:mess_management/blocs/mess_list/mess_list_bloc.dart';
 import 'package:mess_management/blocs/my_userbloc/my_user_bloc.dart';
 import 'package:mess_management/blocs/signin/sign_in_bloc.dart';
-import 'package:mess_management/screens/user_home/MessSelection.dart';
+import 'package:mess_management/screens/mess_selection/MessSelection.dart';
 import 'package:mess_management/screens/user_home/ProfileScreen.dart';
 import 'package:mess_repository/mess_repository.dart';
 
@@ -29,33 +29,29 @@ class U_HomeScreen extends StatelessWidget {
           ],
         ),
         body: BlocBuilder<MyUserBloc, MyUserState>(builder: (context, state) {
-                    if (state.status == MyUserStatus.success) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: state.user!.Alloted
-                ? ProfileScreen()
-                : MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => UpdateUserInfoBloc(context
-                            .read<AuthenticationBloc>()
-                            .userRepository),
-                      ),
-                      BlocProvider(
-                        create: (context) => UpdateMessInfoBloc(FirebaseMessRepository()),
-                      ),
-                      BlocProvider(create: (context)=>MessListBloc(messRepository: FirebaseMessRepository()))
-                    ],
-                    child: MessSelection(),
-                  ),
-        );
-                    } else {
-        return Container(
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-                    }
-                  }));
+          if (state.status == MyUserStatus.success) {
+            return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          UpdateMessInfoBloc(FirebaseMessRepository()),
+                    ),
+                    BlocProvider(
+                      create: (context) => MyUserBloc(myUserRepository: context.read<AuthenticationBloc>().userRepository,
+                      MyUserId: context.read<AuthenticationBloc>().state.user!.uid),
+                    ),
+                    BlocProvider(
+                      create: (context) => MessListBloc(messRepository: FirebaseMessRepository()),
+                    ),
+                    BlocProvider(create: (context)=>UpdateUserInfoBloc(context.read<AuthenticationBloc>().userRepository))
+                  ],
+                  child: MessSelection(),
+                ));
+          } else {
+            return CircularProgressIndicator();
+          }
+        }));
   }
 }

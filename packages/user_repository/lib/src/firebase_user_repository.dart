@@ -98,5 +98,7 @@ Future<MyUser> getMyUser(String myUserId) async {
     } );
   }
 
-
+  Stream<MyUser>  userdetails(String MyUserId){
+    return UsersCollection.doc(MyUserId).snapshots().map((val) => MyUser.fromEntity(MyUserEntity.fromDocument(val.data()!)));
+  }
 }

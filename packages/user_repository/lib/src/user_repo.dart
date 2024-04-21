@@ -8,7 +8,7 @@ abstract class UserRepository{
   Future<void> LogOut();
   Future<MyUser> signUp(MyUser myUser,String password);
   Future<void> resetPassword(String email);
-
+  Stream<MyUser>  userdetails(String MyUserId);
   //set User data
   Future<void> setUserData(MyUser myuser);
   //get User data

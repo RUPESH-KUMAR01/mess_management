@@ -27,7 +27,8 @@ class MyAppView extends StatelessWidget {
             (context)=> SignInBloc(userRepository: context.read<AuthenticationBloc>().userRepository)),
             BlocProvider(
               create: (context)=>MyUserBloc(
-                myUserRepository: context.read<AuthenticationBloc>().userRepository
+                myUserRepository: context.read<AuthenticationBloc>().userRepository, 
+                MyUserId: context.read<AuthenticationBloc>().state.user!.uid,
                 )..add(GetMyUser(MyUserId: context.read<AuthenticationBloc>().state.user!.uid)),
             ),
             ], child: HomeScreen()

@@ -47,7 +47,7 @@ class FirebaseMessRepository implements MessRepository{
   }
 
   @override
-  Future<void> IncreaseMess(Mess mess) async {
+  Future<void> SetMess(Mess mess) async {
     try {
       await MessCollection.doc(mess.MessNo.toString()).update(mess.toEntity().toDocument());
     } catch (e) {

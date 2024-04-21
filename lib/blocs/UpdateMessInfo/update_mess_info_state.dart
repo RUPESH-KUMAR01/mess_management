@@ -8,3 +8,16 @@ sealed class UpdateMessInfoState extends Equatable {
 }
 
 final class UpdateMessInfoInitial extends UpdateMessInfoState {}
+
+final class UpdateMessLoading extends UpdateMessInfoState{}
+
+final class UpdateMessFailure extends UpdateMessInfoState{}
+
+
+final class UpdateMessTry extends UpdateMessInfoState{}
+
+final class UpdateMessSuccess extends UpdateMessInfoState{
+  final Mess mess;
+
+  const UpdateMessSuccess(this.mess);
+}

@@ -1,8 +1,15 @@
 part of 'update_mess_info_bloc.dart';
 
-sealed class UpdateMessInfoEvent extends Equatable {
+abstract class UpdateMessInfoEvent extends Equatable {
   const UpdateMessInfoEvent();
 
   @override
   List<Object> get props => [];
+}
+
+
+class SetMessInfo extends UpdateMessInfoEvent{
+  final Mess mess;
+
+  const SetMessInfo(this.mess);
 }
