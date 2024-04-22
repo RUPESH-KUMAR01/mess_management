@@ -10,6 +10,6 @@ abstract class UpdateMessInfoEvent extends Equatable {
 
 class SetMessInfo extends UpdateMessInfoEvent{
   final Mess mess;
-
-  const SetMessInfo(this.mess);
+  final int add;
+  const SetMessInfo(this.mess,{this.add=1});
 }

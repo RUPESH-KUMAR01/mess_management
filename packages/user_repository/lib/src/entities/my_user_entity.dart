@@ -9,6 +9,7 @@ class MyUserEntity extends Equatable{
   final int Balance;
   final int MessNo;
   final bool isAdmin;
+  final bool change;
 
 
   const MyUserEntity({
@@ -19,7 +20,8 @@ class MyUserEntity extends Equatable{
     this.Alloted=false,
     this.Balance=0,
     required this.MessNo,
-    this.isAdmin=false
+    this.isAdmin=false,
+    this.change=false
     });
 
   Map<String,Object> toDocument(){
@@ -31,7 +33,8 @@ class MyUserEntity extends Equatable{
       'Alloted':Alloted,
       'Balance':Balance,
       'isAdmin':isAdmin,
-      'MessNo':MessNo
+      'MessNo':MessNo,
+      'change':change
     };
   }
 
@@ -44,7 +47,8 @@ class MyUserEntity extends Equatable{
      Alloted: doc['Alloted'] as bool,
      Balance: doc['Balance'] as int, 
      MessNo: doc['MessNo'] as int,
-     isAdmin: doc['isAdmin'] as bool
+     isAdmin: doc['isAdmin'] as bool,
+     change: doc['change'] as bool
      );
   }
   @override
@@ -57,11 +61,12 @@ class MyUserEntity extends Equatable{
       Alloted:$Alloted,
       Balance:$Balance,
       MessNo:$MessNo,
-      isAdmin:$isAdmin
+      isAdmin:$isAdmin,
+      change:$change
     }''';
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,isAdmin];
+  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,isAdmin,change];
 }

@@ -19,7 +19,7 @@ class UpdateMessInfoBloc extends Bloc<UpdateMessInfoEvent, UpdateMessInfoState> 
           Mess mess=Mess.empty;
           mess= mess.copyWith(Capacity: event.mess.Capacity,
           MessNo: event.mess.MessNo,
-          Present: event.mess.Present+1);
+          Present: event.mess.Present+event.add);
           await _messRepository.SetMess(mess);
           emit(UpdateMessSuccess(event.mess));
         }

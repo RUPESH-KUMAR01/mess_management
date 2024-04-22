@@ -23,10 +23,28 @@ class UpdateUserInfoBloc extends Bloc<UpdateUserInfoEvent, UpdateUserInfoState> 
           MessNo: event.mess.MessNo
         );
         _userRepository.setUserData(new_user);
+        emit(UpdateUserInfoSuccess());
       } catch (e) {
         log(e.toString());
         emit(UpdateUserInfoFailure());
       }
     });
+    on<SetUserBalance>(
+      (event,emit) async {
+              emit(UpdateUserInfoLoading());
+      try {
+        MyUser myUser=await _userRepository.getMyUser(event.MyUserId);
+        MyUser new_user=myUser.copyWith(
+          Alloted: true,
+          Balance: ((myUser.Balance) + event.AddBalance) as int
+        );
+        _userRepository.setUserData(new_user);
+        emit(UpdateUserInfoSuccess());
+      } catch (e) {
+        log(e.toString());
+        emit(UpdateUserInfoFailure());
+      }
+      }
+    );
   }
 }

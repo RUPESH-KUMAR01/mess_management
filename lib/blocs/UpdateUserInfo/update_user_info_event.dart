@@ -13,3 +13,9 @@ class SetUserInfo extends UpdateUserInfoEvent{
   final String MyUserId;
   const SetUserInfo(this.mess,this.MyUserId);
 }
+
+class SetUserBalance extends UpdateUserInfoEvent{
+  final String MyUserId;
+  final AddBalance;
+  const SetUserBalance(this.MyUserId,this.AddBalance);
+}

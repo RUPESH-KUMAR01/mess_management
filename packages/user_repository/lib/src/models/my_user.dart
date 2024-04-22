@@ -10,6 +10,7 @@ class MyUser extends Equatable{
   final int Balance;
   final int MessNo;
   final bool isAdmin;
+  final bool change;
 
   const MyUser({
     required this.id, 
@@ -19,7 +20,8 @@ class MyUser extends Equatable{
     this.Alloted=false,
     this.Balance=0,
     required this.MessNo,
-    this.isAdmin=false});
+    this.isAdmin=false,
+    this.change=false});
   static const empty=MyUser(
     id: '',
     email: '',
@@ -28,7 +30,8 @@ class MyUser extends Equatable{
     Alloted: false,
     Balance: 0,
     MessNo: 0,
-    isAdmin: false);
+    isAdmin: false,
+    change: false);
 
   MyUser copyWith({
   String? id,
@@ -39,7 +42,8 @@ class MyUser extends Equatable{
   int? Balance,
   int? MessNo,
   String? Messid,
-  bool? isAdmin
+  bool? isAdmin,
+  bool? change
   }){
     return MyUser(
       id: id ?? this.id,
@@ -49,7 +53,8 @@ class MyUser extends Equatable{
         Alloted: Alloted??this.Alloted,
         Balance: Balance??this.Balance,
         MessNo: MessNo??this.MessNo,
-        isAdmin: isAdmin??this.isAdmin
+        isAdmin: isAdmin??this.isAdmin,
+        change: change??this.change
          );
   }
 
@@ -67,7 +72,8 @@ class MyUser extends Equatable{
       Alloted:Alloted,
       Balance: Balance,
       MessNo: MessNo,
-      isAdmin: isAdmin
+      isAdmin: isAdmin,
+      change: change
     );
   }
 
@@ -80,10 +86,11 @@ class MyUser extends Equatable{
        Alloted: entity.Alloted,
        Balance: entity.Balance,
        MessNo: entity.MessNo,
-       isAdmin: entity.isAdmin);
+       isAdmin: entity.isAdmin,
+       change: entity.change);
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,isAdmin];
+  List<Object?> get props => [id,email,name,RollNo,Alloted,Balance,MessNo,isAdmin,change];
 }

@@ -39,10 +39,6 @@ class U_HomeScreen extends StatelessWidget {
                           UpdateMessInfoBloc(FirebaseMessRepository()),
                     ),
                     BlocProvider(
-                      create: (context) => MyUserBloc(myUserRepository: context.read<AuthenticationBloc>().userRepository,
-                      MyUserId: context.read<AuthenticationBloc>().state.user!.uid),
-                    ),
-                    BlocProvider(
                       create: (context) => MessListBloc(messRepository: FirebaseMessRepository()),
                     ),
                     BlocProvider(create: (context)=>UpdateUserInfoBloc(context.read<AuthenticationBloc>().userRepository))

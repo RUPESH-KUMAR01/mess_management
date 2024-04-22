@@ -1,88 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mess_management/blocs/UpdateMessInfo/update_mess_info_bloc.dart';
 import 'package:mess_management/blocs/UpdateUserInfo/update_user_info_bloc.dart';
 import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 import 'package:mess_management/blocs/mess_list/mess_list_bloc.dart';
 import 'package:mess_management/blocs/my_userbloc/my_user_bloc.dart';
-import 'package:mess_management/screens/user_home/ProfileScreen.dart';
+import 'package:mess_management/screens/user_home/Progress_screen.dart';
 
-class MessSelection extends StatefulWidget {
-  const MessSelection({super.key});
+class Mess_change extends StatefulWidget {
+  const Mess_change({super.key});
 
   @override
-  State<MessSelection> createState() => _MessSelectionState();
+  State<Mess_change> createState() => _Mess_changeState();
 }
 
-class _MessSelectionState extends State<MessSelection> {
+class _Mess_changeState extends State<Mess_change> {
+  int? _currentMess;
   int? _selectedMess;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MyUserBloc, MyUserState>(
-  builder: (context, state) {
-  if(state.status==MyUserStatus.success){  
-    if(state.user!.Alloted==false){
-        return BlocListener<UpdateMessInfoBloc, UpdateMessInfoState>(
-      listener: (context, state) {
-        if(state is UpdateMessTry){
-          setState(() {
-            _selectedMess=null;
-          });
-          SnackBar(content: Text('Try Again'),
-          duration: Durations.medium4,);
-        }
-      },
-      child: BlocBuilder<MessListBloc, MessListState>(
+    return Scaffold(
+      appBar: AppBar(title: Text("Mess Change"),backgroundColor: Colors.blueAccent,),
+      body: BlocBuilder<MyUserBloc, MyUserState>(
         builder: (context, state) {
-          if (state is MessListSuccess) {
-            return Column(
-              children:[ 
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.messes.length,
-                    itemBuilder: (context, int i) {
-                      if(state.messes[i].Present<state.messes[i].Capacity){
-                        return CustomListTile(i, state, context);
-                      }else{
-                        return CustomListTile2(i, state, context);
+        if(state.status==MyUserStatus.success){  
+      _currentMess=state.user!.MessNo;
+      if(state.user!.change==false){
+          return BlocBuilder<MessListBloc, MessListState>(
+          builder: (context, state) {
+            if (state is MessListSuccess) {
+              return Column(
+                children:[
+                  const SizedBox(height: 10,),
+                   SizedBox(
+                    child:Text(
+                      "Current Mess: ${_currentMess}"
+                    )),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.messes.length,
+                      itemBuilder: (context,i) {
+                        if(state.messes[i].Present<state.messes[i].Capacity && i==_currentMess){
+                          return CustomListTile(i, state, context);
+                        }else{
+                          return CustomListTile2(i, state, context);
+                        }
+                          
                       }
-                        
-                    }
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8),
-                  child:_selectedMess != null
-                    ? TextButton(
-                        onPressed: () {
-                          context
-                              .read<UpdateMessInfoBloc>()
-                              .add(SetMessInfo(state.messes[_selectedMess!]));
-                          context.read<UpdateUserInfoBloc>().add(SetUserInfo(state.messes[_selectedMess!], context.read<AuthenticationBloc>().state.user!.uid));
-                        },
-                        child: Text('Confirm'))
-                    : Text('Please Select Mess')
-            )
-            ]
-            );
-          } else {
-            return Center(child: const CircularProgressIndicator());
-          }
-        },
-      ),
-    );
-    }else{
-      return ProfileScreen();
-    }
-  }else{
-    return CircularProgressIndicator();
-  }
-    
-  },
-);
-  }
-
-  Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child:_selectedMess != null
+                      ? TextButton(
+                          onPressed: () {
+      
+                          },
+                          child: Text('Confirm'))
+                      : Text('Please Select Mess')
+              )
+              ]
+              );
+            } else {
+              return Center(child: const CircularProgressIndicator());
+            }
+          },
+        );
+      }else{
+        return ProgressScreen();
+      }
+        }else{
+      return CircularProgressIndicator();
+        }
+      
+      }),
+    );}
+Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
     return Container(
                         color: (_selectedMess == i)
                             ? Colors.blue.withOpacity(0.5)
@@ -106,13 +99,13 @@ class _MessSelectionState extends State<MessSelection> {
                                 child: TextButton(onPressed:() {
                                 setState(() {
                                   if (_selectedMess != i) {
-                                    if(state.messes[i].Present<state.messes[i].Capacity)
+                                    if(state.messes[i].Present<state.messes[i].Capacity && _currentMess!=_selectedMess)
                                     _selectedMess = i;
                                   } else {
                                     _selectedMess = null;
                                   }
                                 });
-                                                              }, child: Text('Select'),),
+                                }, child: Text('Select'),),
                               )
                             ] 
                           ),
@@ -145,8 +138,5 @@ class _MessSelectionState extends State<MessSelection> {
                         ),
                       );
   }
+
 }
-
-
-
-

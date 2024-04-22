@@ -13,31 +13,10 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<MyUserBloc, MyUserState>(
       builder: (context, state) {
         if (state.user?.isAdmin ?? false) {
-          return BlocProvider<MyUserBloc>(
-            create: (context) => MyUserBloc(
-                myUserRepository:
-                    context.read<AuthenticationBloc>().userRepository,
-                    MyUserId: context.read<AuthenticationBloc>().state.user!.uid)
-              ..add(GetMyUser(
-                  MyUserId:
-                      context.read<AuthenticationBloc>().state.user!.uid)),
-            child: AHomeScreen(),
-          );
+          return  AHomeScreen();
         } else {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider<MyUserBloc>(
-                create: (context) => MyUserBloc(
-                    myUserRepository:
-                        context.read<AuthenticationBloc>().userRepository,
-                        MyUserId: context.read<AuthenticationBloc>().state.user!.uid)
-                  ..add(GetMyUser(
-                      MyUserId:
-                          context.read<AuthenticationBloc>().state.user!.uid)),
-              ),
-            ],
-            child: U_HomeScreen(),
-          );
+          return U_HomeScreen();
+          
         }
       },
     );
