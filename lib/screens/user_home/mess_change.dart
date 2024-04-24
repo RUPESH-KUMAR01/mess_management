@@ -1,11 +1,13 @@
+import 'package:approval_repository/approval_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mess_management/blocs/Approval_user/approval_user_bloc.dart';
 import 'package:mess_management/blocs/UpdateUserInfo/update_user_info_bloc.dart';
 import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 import 'package:mess_management/blocs/mess_list/mess_list_bloc.dart';
 import 'package:mess_management/blocs/my_userbloc/my_user_bloc.dart';
 import 'package:mess_management/screens/user_home/Progress_screen.dart';
+import 'package:mess_repository/mess_repository.dart';
 
 class Mess_change extends StatefulWidget {
   const Mess_change({super.key});
@@ -16,7 +18,7 @@ class Mess_change extends StatefulWidget {
 
 class _Mess_changeState extends State<Mess_change> {
   int? _currentMess;
-  int? _selectedMess;
+  Mess? _selectedMess;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +42,7 @@ class _Mess_changeState extends State<Mess_change> {
                     child: ListView.builder(
                       itemCount: state.messes.length,
                       itemBuilder: (context,i) {
-                        if(state.messes[i].Present<state.messes[i].Capacity && i==_currentMess){
+                        if(state.messes[i].Present<state.messes[i].Capacity && state.messes[i].MessNo!=_currentMess){
                           return CustomListTile(i, state, context);
                         }else{
                           return CustomListTile2(i, state, context);
@@ -54,7 +56,16 @@ class _Mess_changeState extends State<Mess_change> {
                     child:_selectedMess != null
                       ? TextButton(
                           onPressed: () {
-      
+                            Approval _approval=Approval(
+                              id: context.read<AuthenticationBloc>().state.user!.uid ,
+                               fMessNo: int.parse(_selectedMess!.MessNo.toString()),
+                                iMessNo: int.parse(_currentMess.toString()));
+                                context.read<UpdateUserInfoBloc>().add(
+                                  SetChangeRequest(context.read<AuthenticationBloc>().state.user!.uid,true)
+                                );
+                            context.read<ApprovalUserBloc>().add(
+                              MessChangerequest(_approval)
+                            );
                           },
                           child: Text('Confirm'))
                       : Text('Please Select Mess')
@@ -77,7 +88,7 @@ class _Mess_changeState extends State<Mess_change> {
     );}
 Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
     return Container(
-                        color: (_selectedMess == i)
+                        color: (_selectedMess?.MessNo == state.messes[i].MessNo)
                             ? Colors.blue.withOpacity(0.5)
                             : Colors.transparent,
                         child: Padding(
@@ -99,8 +110,8 @@ Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
                                 child: TextButton(onPressed:() {
                                 setState(() {
                                   if (_selectedMess != i) {
-                                    if(state.messes[i].Present<state.messes[i].Capacity && _currentMess!=_selectedMess)
-                                    _selectedMess = i;
+                                    if(state.messes[i].Present<state.messes[i].Capacity && _currentMess!=state.messes[i].MessNo)
+                                    _selectedMess = state.messes[i];
                                   } else {
                                     _selectedMess = null;
                                   }
@@ -115,7 +126,7 @@ Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
 
    Container CustomListTile2(int i, MessListSuccess state, BuildContext context) {
     return Container(
-                        color: (_selectedMess == i)
+                        color: (_selectedMess?.MessNo == state.messes[i].MessNo)
                             ? Colors.blue.withOpacity(0.5)
                             : Colors.transparent,
                         child: Padding(

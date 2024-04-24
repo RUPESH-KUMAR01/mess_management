@@ -19,3 +19,9 @@ class SetUserBalance extends UpdateUserInfoEvent{
   final AddBalance;
   const SetUserBalance(this.MyUserId,this.AddBalance);
 }
+
+class SetChangeRequest extends UpdateUserInfoEvent{
+  final String MyUserId;
+  final bool _change;
+  const SetChangeRequest(this.MyUserId,this._change);
+}

@@ -6,6 +6,7 @@ import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 import 'package:mess_management/blocs/mess_list/mess_list_bloc.dart';
 import 'package:mess_management/blocs/my_userbloc/my_user_bloc.dart';
 import 'package:mess_management/screens/user_home/ProfileScreen.dart';
+import 'package:mess_repository/mess_repository.dart';
 
 class MessSelection extends StatefulWidget {
   const MessSelection({super.key});
@@ -15,7 +16,7 @@ class MessSelection extends StatefulWidget {
 }
 
 class _MessSelectionState extends State<MessSelection> {
-  int? _selectedMess;
+  Mess? _selectedMess;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MyUserBloc, MyUserState>(
@@ -57,8 +58,8 @@ class _MessSelectionState extends State<MessSelection> {
                         onPressed: () {
                           context
                               .read<UpdateMessInfoBloc>()
-                              .add(SetMessInfo(state.messes[_selectedMess!]));
-                          context.read<UpdateUserInfoBloc>().add(SetUserInfo(state.messes[_selectedMess!], context.read<AuthenticationBloc>().state.user!.uid));
+                              .add(SetMessInfo(_selectedMess!));
+                          context.read<UpdateUserInfoBloc>().add(SetUserInfo(_selectedMess!, context.read<AuthenticationBloc>().state.user!.uid));
                         },
                         child: Text('Confirm'))
                     : Text('Please Select Mess')
@@ -107,7 +108,7 @@ class _MessSelectionState extends State<MessSelection> {
                                 setState(() {
                                   if (_selectedMess != i) {
                                     if(state.messes[i].Present<state.messes[i].Capacity)
-                                    _selectedMess = i;
+                                    _selectedMess = state.messes[i];
                                   } else {
                                     _selectedMess = null;
                                   }

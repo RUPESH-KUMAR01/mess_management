@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mess_management/blocs/Approval_user/approval_user_bloc.dart';
 import 'package:mess_management/blocs/UpdateUserInfo/update_user_info_bloc.dart';
+import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
+import 'package:mess_management/blocs/status_change/status_chang_bloc.dart';
 import 'package:mess_management/blocs/mess_list/mess_list_bloc.dart';
 import 'package:mess_management/blocs/my_userbloc/my_user_bloc.dart';
 import 'package:mess_management/screens/user_home/mess_change.dart';
 import 'package:mess_management/screens/user_home/topup_screen.dart';
 import 'package:mess_repository/mess_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -106,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                           },
                           child: Text("Top Up"),
                         ),
-                      ),
+                      ),SizedBox(width: 10,),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: FilledButton(
@@ -121,6 +125,14 @@ class ProfileScreen extends StatelessWidget {
                                   BlocProvider(
                                     create: (context) => MessListBloc(messRepository: FirebaseMessRepository()),
                                   ),
+                                  BlocProvider(create: (context)=> ApprovalUserBloc()),
+                                  BlocProvider(
+                                    create: (context) => StatusChangBloc(MyUserId: context.read<AuthenticationBloc>().state.user!.uid),
+                                  ),
+                                  BlocProvider(
+                                    create: (context) => UpdateUserInfoBloc(context.read<AuthenticationBloc>().userRepository),
+                                    child: Container(),
+                                  )
                                 ],
                                 child: Mess_change(),
                               );

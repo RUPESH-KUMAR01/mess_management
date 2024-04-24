@@ -35,7 +35,6 @@ class UpdateUserInfoBloc extends Bloc<UpdateUserInfoEvent, UpdateUserInfoState> 
       try {
         MyUser myUser=await _userRepository.getMyUser(event.MyUserId);
         MyUser new_user=myUser.copyWith(
-          Alloted: true,
           Balance: ((myUser.Balance) + event.AddBalance) as int
         );
         _userRepository.setUserData(new_user);
@@ -46,5 +45,19 @@ class UpdateUserInfoBloc extends Bloc<UpdateUserInfoEvent, UpdateUserInfoState> 
       }
       }
     );
+    on<SetChangeRequest> ((event, emit) async{
+                    emit(UpdateUserInfoLoading());
+      try {
+        MyUser myUser=await _userRepository.getMyUser(event.MyUserId);
+        MyUser new_user=myUser.copyWith(
+          change: event._change
+        );
+        _userRepository.setUserData(new_user);
+        emit(UpdateUserInfoSuccess());
+      } catch (e) {
+        log(e.toString());
+        emit(UpdateUserInfoFailure());
+      }
+    });
   }
 }
