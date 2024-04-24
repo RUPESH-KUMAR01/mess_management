@@ -25,3 +25,9 @@ class SetChangeRequest extends UpdateUserInfoEvent{
   final bool _change;
   const SetChangeRequest(this.MyUserId,this._change);
 }
+
+class UserMessUpdate extends UpdateUserInfoEvent{
+  final String MyUserId;
+  final int MessNo;
+  UserMessUpdate(this.MyUserId,this.MessNo);
+}

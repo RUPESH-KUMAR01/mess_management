@@ -41,7 +41,6 @@ class MyUser extends Equatable{
   bool? Alloted,
   int? Balance,
   int? MessNo,
-  String? Messid,
   bool? isAdmin,
   bool? change
   }){

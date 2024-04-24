@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mess_management/blocs/Approval_list/approval_list_bloc.dart';
+import 'package:mess_management/blocs/UpdateMessInfo/update_mess_info_bloc.dart';
+import 'package:mess_management/blocs/UpdateUserInfo/update_user_info_bloc.dart';
+import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 import 'package:mess_management/blocs/mess_create/mess_create_bloc.dart';
 import 'package:mess_management/screens/admin_home/RequestApprove.dart';
 import 'package:mess_management/screens/admin_home/mess_create.dart';
@@ -23,8 +26,13 @@ class AHomeScreen extends StatelessWidget {
           }, child: Text('Create Mess')),
           TextButton(onPressed:(){Navigator.push(context,MaterialPageRoute<void>(
             builder: (BuildContext context) => 
-            BlocProvider<ApprovalListBloc>(create: (context)=>ApprovalListBloc(),
-            child:RequestApprove(),)));
+            MultiBlocProvider(providers: [
+                BlocProvider<ApprovalListBloc>(create: (context)=>ApprovalListBloc()),
+            BlocProvider(
+              create: (context) => UpdateMessInfoBloc(FirebaseMessRepository())),
+            BlocProvider(create: (context)=>UpdateUserInfoBloc(context.read<AuthenticationBloc>().userRepository))
+            ], child: RequestApprove(),)
+            ));
           }, child: Text('Approvals')),
         ],)
     );

@@ -13,3 +13,9 @@ class SetMessInfo extends UpdateMessInfoEvent{
   final int add;
   const SetMessInfo(this.mess,{this.add=1});
 }
+class SetChangeInfo extends UpdateMessInfoEvent{
+  final int iMessNo;
+  final int fMessNo;
+
+  SetChangeInfo(this.iMessNo,this.fMessNo);
+}

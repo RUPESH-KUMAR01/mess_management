@@ -19,3 +19,8 @@ class RequestRemoval extends ApprovalUserEvent{
 
   RequestRemoval(this.MyUserId);
 }
+
+class SetRequest extends ApprovalUserEvent{
+  Approval approval;
+  SetRequest(this.approval);
+}

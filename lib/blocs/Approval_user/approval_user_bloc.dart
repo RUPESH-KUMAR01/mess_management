@@ -37,5 +37,15 @@ class ApprovalUserBloc extends Bloc<ApprovalUserEvent, ApprovalUserState> {
         emit(ApprovalUserFailure());
       }
     });
+    on<SetRequest>((event, emit) {
+      emit(ApprovalUserLoading());
+      try {
+        ApprovalRepository.setApproval(event.approval);
+        emit(ApprovalUserSuccess());
+      } catch (e) {
+        log(e.toString());
+        emit(ApprovalUserFailure());
+      }
+    });
   }
 }

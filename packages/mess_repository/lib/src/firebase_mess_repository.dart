@@ -63,4 +63,14 @@ class FirebaseMessRepository implements MessRepository{
     .map((document) => Mess.fromEntity(MessEntity.fromDocument(document.data()))).toList());
   }
   
+  @override
+  Future<Mess> MessInfo(int MessNo) async {
+    try {
+      return await MessCollection.doc(MessNo.toString()).get().then((document) => Mess.fromEntity(MessEntity.fromDocument(document.data()!)));
+    } catch (e) {
+      e.toString();
+      rethrow;
+    }
+  }
+  
 }

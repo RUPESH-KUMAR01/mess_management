@@ -1,6 +1,11 @@
+import 'package:approval_repository/approval_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mess_management/blocs/Approval_list/approval_list_bloc.dart';
+import 'package:mess_management/blocs/Approval_user/approval_user_bloc.dart';
+import 'package:mess_management/blocs/UpdateMessInfo/update_mess_info_bloc.dart';
+import 'package:mess_management/blocs/UpdateUserInfo/update_user_info_bloc.dart';
+import 'package:mess_management/blocs/authentication/authentication_bloc.dart';
 
 class RequestApprove extends StatefulWidget {
   const RequestApprove({super.key});
@@ -26,8 +31,35 @@ class _RequestApproveState extends State<RequestApprove> {
             return ListView.builder(
               itemCount: state.ApprovalList.length,
               itemBuilder:(context, index) {
-                return ListTile(
-                  title: Text(state.ApprovalList![index].id),
+                Approval app=state.ApprovalList[index];
+                return Card(
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text('Intial Mess: ${app.iMessNo}'),
+                          SizedBox(height: 8,),
+                          Text('Final Mess: ${app.fMessNo}')
+                        ],
+                      ),
+                      app.Pending ? 
+                      Row(
+                        children: [
+                          FilledButton(onPressed: (){
+                            Approval approval=app.copyWith(Accepted: true,Pending: false);
+                            context.read<ApprovalUserBloc>().add(SetRequest(approval));
+                            context.read<UpdateMessInfoBloc>().add(SetChangeInfo(app.iMessNo, app.fMessNo));
+                            context.read<UpdateUserInfoBloc>().add(UserMessUpdate(app.id, app.fMessNo));
+                          }, child: Text("Accept")),
+                          FilledButton(onPressed: (){
+                            Approval approval=app.copyWith(Accepted: false,Pending: false);
+                            context.read<ApprovalUserBloc>().add(SetRequest(approval));
+                          }, child: Text("Reject"))
+                        ],
+                      )
+                      : Text(app.Accepted ? "Accepted" : "Rejected")
+                    ],
+                  ),
                 );
               },
             );

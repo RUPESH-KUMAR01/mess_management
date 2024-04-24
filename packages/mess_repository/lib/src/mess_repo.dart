@@ -8,4 +8,5 @@ abstract class MessRepository{
   Future<Mess> CreateMess(Mess mess);
   Future<void> SetMess(Mess mess);
   Future<List<Mess>> GetMess();
+  Future<Mess> MessInfo(int MessNo);
 }

@@ -17,7 +17,7 @@ class UpdateMessInfoBloc extends Bloc<UpdateMessInfoEvent, UpdateMessInfoState> 
       try {
         if(event.mess.Present<event.mess.Capacity){
           Mess mess=Mess.empty;
-          mess= mess.copyWith(Capacity: event.mess.Capacity,
+          mess= event.mess.copyWith(Capacity: event.mess.Capacity,
           MessNo: event.mess.MessNo,
           Present: event.mess.Present+event.add);
           await _messRepository.SetMess(mess);
@@ -30,6 +30,22 @@ class UpdateMessInfoBloc extends Bloc<UpdateMessInfoEvent, UpdateMessInfoState> 
         log(e.toString());
         emit(UpdateMessFailure());
       }
+    });
+    on<SetChangeInfo>((event, emit) async {
+      emit(UpdateMessLoading());
+      try{
+      Mess iMess=await _messRepository.MessInfo(event.iMessNo);
+      Mess fMess=await _messRepository.MessInfo(event.fMessNo);
+      Mess _iMess=iMess.copyWith(Present: iMess.Present-1);
+      Mess _fMess=fMess.copyWith(Present: fMess.Present+1);
+      _messRepository.SetMess(_iMess);
+      _messRepository.SetMess(_fMess);
+      emit(UpdateMessSuccess(Mess.empty));
+      }catch(e){
+        log(e.toString());
+        emit(UpdateMessFailure());
+      }
+
     });
   }
 }
