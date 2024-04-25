@@ -32,30 +32,32 @@ class _ProgressScreenState extends State<ProgressScreen> {
         builder: (context, state) {
           if (state is ApprovalStatusSuccess) {
             if (state.approval.Pending) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Pending"),
-                  !_change?
-                  FilledButton(
-                      onPressed: () {
-                        context.read<ApprovalUserBloc>().add(RequestRemoval(
-                            context
-                                .read<AuthenticationBloc>()
-                                .state
-                                .user!
-                                .uid));
-                        context.read<UpdateUserInfoBloc>().add(SetChangeRequest(
-                            context.read<AuthenticationBloc>().state.user!.uid,
-                            false));
-                      },
-                      child: Text('Remove Request')) : CircularProgressIndicator()
-                ],
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Pending"),
+                    !_change?
+                    FilledButton(
+                        onPressed: () {
+                          context.read<ApprovalUserBloc>().add(RequestRemoval(
+                              context
+                                  .read<AuthenticationBloc>()
+                                  .state
+                                  .user!
+                                  .uid));
+                          context.read<UpdateUserInfoBloc>().add(SetChangeRequest(
+                              context.read<AuthenticationBloc>().state.user!.uid,
+                              false));
+                        },
+                        child: Text('Remove Request')) : CircularProgressIndicator()
+                  ],
+                ),
               );
             } else {
               return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(state.approval.Accepted
                         ? "Mess Changed"

@@ -21,7 +21,10 @@ class AHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Admin Home Screen'),titleTextStyle: TextStyle(color: Colors.white),
         backgroundColor: Colors.black,),
-        body:Column(children: [
+        body:Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
           TextButton(onPressed:(){Navigator.push(context,MaterialPageRoute<void>(
             builder: (BuildContext context) => 
             BlocProvider<MessCreateBloc>(create: (context)=>MessCreateBloc(messRepository: FirebaseMessRepository()),

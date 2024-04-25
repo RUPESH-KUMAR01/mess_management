@@ -144,9 +144,13 @@ Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
                               SizedBox(width: MediaQuery.of(context).size.width*0.5,
                               child: Row(
                                 children: [
-                                  Text("Present: ${state.messes[i].Present}"),
-                                  const SizedBox(width: 15,),
+                                  Column(
+                                    children: [
+                                      Text("Present: ${state.messes[i].Present}"),
+                                                                        const SizedBox(width: 15,),
                                   Text("Capacity: ${state.messes[i].Capacity}")
+                                    ],
+                                  ),
                                 ],
                               ),),
                             ] 

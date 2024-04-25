@@ -85,7 +85,7 @@ class _MessSelectionState extends State<MessSelection> {
 
   Container CustomListTile(int i, MessListSuccess state, BuildContext context) {
     return Container(
-                        color: (_selectedMess == i)
+                        color: (_selectedMess!.MessNo == state.messes[i].MessNo)
                             ? Colors.blue.withOpacity(0.5)
                             : Colors.transparent,
                         child: Padding(
