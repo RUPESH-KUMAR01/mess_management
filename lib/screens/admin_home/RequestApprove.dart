@@ -21,53 +21,80 @@ class _RequestApproveState extends State<RequestApprove> {
     context.read<ApprovalListBloc>().add(GetApprovalList());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Approval Page'),),
-      body: BlocBuilder<ApprovalListBloc, ApprovalListState>(
-        builder: (context, state) {
-          if(state is ApprovalListSuccess){
-            return ListView.builder(
-              itemCount: state.ApprovalList.length,
-              itemBuilder:(context, index) {
-                Approval app=state.ApprovalList[index];
-                return Card(
-                  child: Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text('Intial Mess: ${app.iMessNo}'),
-                          SizedBox(height: 8,),
-                          Text('Final Mess: ${app.fMessNo}')
-                        ],
-                      ),
-                      app.Pending ? 
-                      Row(
-                        children: [
-                          FilledButton(onPressed: (){
-                            Approval approval=app.copyWith(Accepted: true,Pending: false);
-                            context.read<ApprovalUserBloc>().add(SetRequest(approval));
-                            context.read<UpdateMessInfoBloc>().add(SetChangeInfo(app.iMessNo, app.fMessNo));
-                            context.read<UpdateUserInfoBloc>().add(UserMessUpdate(app.id, app.fMessNo));
-                          }, child: Text("Accept")),
-                          FilledButton(onPressed: (){
-                            Approval approval=app.copyWith(Accepted: false,Pending: false);
-                            context.read<ApprovalUserBloc>().add(SetRequest(approval));
-                          }, child: Text("Reject"))
-                        ],
-                      )
-                      : Text(app.Accepted ? "Accepted" : "Rejected")
-                    ],
-                  ),
-                );
-              },
-            );
-          }else{
-            return CircularProgressIndicator();
+      appBar: AppBar(
+        title: Text('Approval Page'),
+      ),
+      body: BlocListener<ApprovalUserBloc, ApprovalUserState>(
+        listener: (context, state) {
+          if(state is ApprovalUserSuccess){
+            setState(() {
+              context.read<ApprovalListBloc>().add(GetApprovalList());
+            });
           }
-          
         },
+        child: BlocBuilder<ApprovalListBloc, ApprovalListState>(
+          builder: (context, state) {
+            if (state is ApprovalListSuccess) {
+              return ListView.builder(
+                itemCount: state.ApprovalList.length,
+                itemBuilder: (context, index) {
+                  Approval app = state.ApprovalList[index];
+                  return Card(
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            Text('Intial Mess: ${app.iMessNo}'),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text('Final Mess: ${app.fMessNo}')
+                          ],
+                        ),
+                        app.Pending
+                            ? Row(
+                                children: [
+                                  FilledButton(
+                                      onPressed: () {
+                                        Approval approval = app.copyWith(
+                                            Accepted: true, Pending: false);
+                                        context.read<UpdateMessInfoBloc>().add(
+                                            SetChangeInfo(
+                                                app.iMessNo, app.fMessNo));
+                                        context.read<UpdateUserInfoBloc>().add(
+                                            UserMessUpdate(
+                                                app.id, app.fMessNo));
+                                        context
+                                            .read<ApprovalUserBloc>()
+                                            .add(SetRequest(approval));
+                                      },
+                                      child: Text("Accept")),
+                                  FilledButton(
+                                      onPressed: () {
+                                        Approval approval = app.copyWith(
+                                            Accepted: false, Pending: false);
+                                        context
+                                            .read<ApprovalUserBloc>()
+                                            .add(SetRequest(approval));
+                                      },
+                                      child: Text("Reject"))
+                                ],
+                              )
+                            : Text(app.Accepted ? "Accepted" : "Rejected")
+                      ],
+                    ),
+                  );
+                },
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ),
       ),
     );
   }

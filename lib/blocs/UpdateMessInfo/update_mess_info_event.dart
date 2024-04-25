@@ -19,3 +19,8 @@ class SetChangeInfo extends UpdateMessInfoEvent{
 
   SetChangeInfo(this.iMessNo,this.fMessNo);
 }
+
+class SetMessInfobyMessNo extends UpdateMessInfoEvent{
+  final int MessNo;
+  SetMessInfobyMessNo(this.MessNo);
+}

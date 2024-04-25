@@ -31,6 +31,22 @@ class UpdateMessInfoBloc extends Bloc<UpdateMessInfoEvent, UpdateMessInfoState> 
         emit(UpdateMessFailure());
       }
     });
+
+    on<SetMessInfobyMessNo>((event,emit) async {
+      emit(UpdateMessLoading());
+      try {
+        Mess mess=await _messRepository.MessInfo(event.MessNo);
+        Mess new_mess=mess.copyWith(Present: mess.Present-1);
+        await _messRepository.SetMess(new_mess);
+        print(mess.Present-1);
+        print(new_mess.Present);
+        emit(UpdateMessSuccess(new_mess));
+      } catch (e) {
+        log(e.toString());
+        emit(UpdateMessFailure());
+      }
+    });
+
     on<SetChangeInfo>((event, emit) async {
       emit(UpdateMessLoading());
       try{

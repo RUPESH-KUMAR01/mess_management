@@ -13,4 +13,6 @@ abstract class UserRepository{
   Future<void> setUserData(MyUser myuser);
   //get User data
   Future<MyUser> getMyUser(String MyUserId);
+  Stream<List<MyUser>> get getallusers;
+  Future<List<MyUser>> GetAllUsers();
  }

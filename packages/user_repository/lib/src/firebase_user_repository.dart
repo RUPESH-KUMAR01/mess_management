@@ -4,8 +4,10 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/src/entities/entites.dart';
+import 'package:user_repository/src/entities/my_user_entity.dart';
 import 'package:user_repository/src/models/my_user.dart';
 import 'package:user_repository/src/user_repo.dart';
+import 'package:user_repository/user_repository.dart';
 
 class FirebaseUserRepository implements UserRepository{
 FirebaseUserRepository({
@@ -100,5 +102,29 @@ Future<MyUser> getMyUser(String myUserId) async {
 
   Stream<MyUser>  userdetails(String MyUserId){
     return UsersCollection.doc(MyUserId).snapshots().map((val) => MyUser.fromEntity(MyUserEntity.fromDocument(val.data()!)));
+  }
+  
+  @override
+  // TODO: implement getallusers
+  Stream<List<MyUser>> get getallusers {
+    return UsersCollection.snapshots().
+    map((event) => event.docs.
+    map((e) => MyUser.fromEntity(MyUserEntity.fromDocument(e.data()))).toList()
+    );
+  }
+  
+  @override
+  Future<List<MyUser>> GetAllUsers() async{
+    List<MyUser> users=[];
+        try {
+      final pro=await UsersCollection.get();
+      pro.docs.forEach((element) {
+        return users.add(MyUser.fromEntity(MyUserEntity.fromDocument(element.data())));
+      });
+      return users;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 }

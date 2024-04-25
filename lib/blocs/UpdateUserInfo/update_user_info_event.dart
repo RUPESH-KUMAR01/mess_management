@@ -20,6 +20,11 @@ class SetUserBalance extends UpdateUserInfoEvent{
   const SetUserBalance(this.MyUserId,this.AddBalance);
 }
 
+class SetUserInfobyMessNo extends UpdateUserInfoEvent{
+  final String MyUserId;
+  SetUserInfobyMessNo(this.MyUserId);
+}
+
 class SetChangeRequest extends UpdateUserInfoEvent{
   final String MyUserId;
   final bool _change;
